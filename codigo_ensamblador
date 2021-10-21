@@ -1,0 +1,74 @@
+//variables de umbral
+        MOV R5, #60
+        MOV R6, #1
+        MOV R7, #0
+        
+//recibe 0 o 1 según si existe un pasajero
+LOOP    INP R1, 2 //Piloto 
+        STR R1, 100
+        INP R2, 2 //Copiloto 
+        STR R2, 101
+        INP R3, 2 //Asiento 1 
+        STR R3, 102
+        INP R4, 2 //Asiento 2 
+        STR R4, 103
+        
+//recibe presion en cada sensor de choque
+        INP R0,2 
+        CMP R0, R5 //compara con umbral de presión 
+        BGE CHOQUE
+        INP R0,2
+        CMP R0, R5 
+        BGE CHOQUE
+        INP R0,2
+        CMP R0, R5
+        BGE CHOQUE
+        INP R0,2
+        CMP R0, R5
+        BGE CHOQUE
+        
+SALIR   HLT
+
+CHOQUE  OUT R6, 4 //existe Choque7
+        BRA ACT
+        
+ACT     LDR R0, 100 // 0 o 1 Piloto 1
+        CMP R0, #1
+        BEQ PRINT
+        CMP R0, #0
+        BEQ PRINTN
+        
+ACT2    LDR R0, 101 //0 o 1 Copiloto 0 
+        CMP R0, #1
+        BEQ PRINT2
+        CMP R0, #0
+        BEQ PRINT2N
+        
+ACT3    LDR R0, 102 //0 o 1 Asiento 1 0
+        CMP R0, #1
+        BEQ PRINT3
+        CMP R0, #0
+        BEQ PRINT3N
+        
+ACT4    LDR R0, 103 //0 o 1 Asiento 2 1
+        CMP R0, #1
+        BEQ PRINT4
+        CMP R0, #0
+        BEQ PRINT4N
+        
+PRINT   OUT R6,4
+        BRA ACT2
+PRINTN  OUT R7,4
+        BRA ACT2
+PRINT2  OUT R6,4
+        BRA ACT3
+PRINT2N OUT R7,4
+        BRA ACT3
+PRINT3  OUT R6,4
+        BRA ACT4
+PRINT3N OUT R7,4
+        BRA ACT4
+PRINT4  OUT R6,4
+        BRA SALIR
+PRINT4N OUT R7,4
+        BRA SALIR
